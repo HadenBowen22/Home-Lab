@@ -1,58 +1,90 @@
-<h1>JWipe - Disk Sanitization</h1>
 
- ### [YouTube Demonstration](https://youtu.be/7eJexJVCqJo)
+-----
 
-<h2>Description</h2>
-Project consists of a simple PowerShell script that walks the user through "zeroing out" (wiping) any drives that are connected to the system. The utility allows you to select the target disk and choose the number of passes that are performed. The PowerShell script will configure a diskpart script file based on the user's selections and then launch Diskpart to perform the disk sanitization.
-<br />
+# Active Directory Lab Setup using VirtualBox
 
+This guide outlines the steps to create a full-blown Active Directory lab on your personal computer using Oracle VirtualBox.
 
-<h2>Languages and Utilities Used</h2>
+-----
 
-- <b>PowerShell</b> 
-- <b>Diskpart</b>
+## 1\. Download and Install Software
 
-<h2>Environments Used </h2>
+Before you begin, download and install the necessary software:
 
-- <b>Windows 10</b> (21H2)
+  * **Oracle VirtualBox**: The virtualization software.
+  * **VirtualBox Extension Pack**: Essential for additional features.
+  * **Windows 10 ISO**: For your client machine.
+  * **Server 2019 ISO**: For your domain controller.
 
-<h2>Program walk-through:</h2>
+-----
 
-<p align="center">
-Launch the utility: <br/>
-<img src="https://i.imgur.com/62TgaWL.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
-Select the disk:  <br/>
-<img src="https://i.imgur.com/tcTyMUE.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
-Enter the number of passes: <br/>
-<img src="https://i.imgur.com/nCIbXbg.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
-Confirm your selection:  <br/>
-<img src="https://i.imgur.com/cdFHBiU.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
-Wait for process to complete (may take some time):  <br/>
-<img src="https://i.imgur.com/JL945Ga.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
-Sanitization complete:  <br/>
-<img src="https://i.imgur.com/K71yaM2.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
-Observe the wiped disk:  <br/>
-<img src="https://i.imgur.com/AeZkvFQ.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-</p>
+## 2\. Create and Configure the Domain Controller (DC) Virtual Machine
 
-<!--
- ```diff
-- text in red
-+ text in green
-! text in orange
-# text in gray
-@@ text in purple (and bold)@@
-```
---!>
+This section details the setup of your **Domain Controller**.
+
+### 2.1. Initial VM Creation
+
+1.  Create a new virtual machine in VirtualBox and name it `DC`.
+2.  Select **Server 2019** as the operating system.
+
+### 2.2. Network Configuration
+
+1.  Configure two network adapters for the `DC` VM:
+      * **Adapter 1**: Set to **NAT** for internet access.
+      * **Adapter 2**: Set to **Internal Network** (e.g., `ADLabNet`) for communication with client machines.
+
+### 2.3. Server 2019 Installation & Basic Setup
+
+1.  Install **Server 2019** on the `DC` VM.
+2.  Once installed, assign a **static IP address** to the internal network adapter (e.g., `192.168.1.1` with subnet mask `255.255.255.0`).
+3.  Rename the server to `DC`.
+
+### 2.4. Active Directory Domain Services (AD DS) Configuration
+
+1.  Install the **Active Directory Domain Services** role.
+2.  Promote the server to a domain controller and create a new forest (e.g., `mydomain.com`).
+
+### 2.5. Network Services Configuration
+
+1.  Configure **Routing and Remote Access Service (RRAS)** with **Network Address Translation (NAT)** on the `DC`. This allows clients on your internal network to access the internet through the `DC`.
+2.  Set up a **DHCP server** on the `DC` to automatically assign IP addresses to client machines on your internal network.
+
+### 2.6. Create Active Directory Users (Optional)
+
+1.  (Optional) Run a PowerShell script to create a large number of users (e.g., 1000) in Active Directory for testing purposes.
+
+    ```powershell
+    # Example PowerShell script to create 1000 users
+    # Note: Modify OU and other parameters as needed
+    for ($i = 1; $i -le 1000; $i++) {
+        $username = "user$i"
+        $password = ConvertTo-SecureString "Password123!" -AsPlainText -Force
+        New-ADUser -Name $username -SamAccountName $username -UserPrincipalName "$username@mydomain.com" -AccountPassword $password -Enabled $true -DisplayName "User $i"
+    }
+    ```
+
+-----
+
+## 3\. Create and Configure the Client Virtual Machine
+
+This section details the setup of your **Client Workstation**.
+
+### 3.1. Initial VM Creation & OS Installation
+
+1.  Create a new virtual machine and install **Windows 10** on it.
+
+### 3.2. Network Configuration & Domain Join
+
+1.  Connect the Windows 10 VM to the same **Internal Network** (e.g., `ADLabNet`) as your `DC`.
+2.  Rename the client machine to `client1`.
+3.  Join the `client1` machine to your newly created domain (e.g., `mydomain.com`).
+
+### 3.3. Test Domain Login
+
+1.  Log in to the `client1` machine using one of the domain accounts you created in Active Directory.
+
+-----
+
+## Conclusion
+
+Once these steps are completed, you will have a functional Active Directory lab environment within VirtualBox, allowing you to experiment with various Windows networking and domain functionalities.
