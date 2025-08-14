@@ -9,7 +9,7 @@ This guide outlines the steps to create a full-blown Active Directory lab on you
 
 ## 1\. Download and Install Software
 
-Before you begin, download and install the necessary software:
+Download and install the necessary software:
 
   * **Oracle VirtualBox**: The virtualization software.
   * **VirtualBox Extension Pack**: Essential for additional features.
@@ -20,11 +20,11 @@ Before you begin, download and install the necessary software:
 
 ## 2\. Create and Configure the Domain Controller (DC) Virtual Machine
 
-This section details the setup of your **Domain Controller**.
+This section details the setup of the **Domain Controller**.
 
 ### 2.1. Initial VM Creation
 
-1.  Create a new virtual machine in VirtualBox and name it `DC`.
+1.  Create a new virtual machine in VirtualBox named `DC`.
 2.  Select **Server 2019** as the operating system.
 
 ### 2.2. Network Configuration
