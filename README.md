@@ -3,7 +3,7 @@
 
 # Active Directory Lab Setup using VirtualBox
 
-This guide outlines the steps to create a full-blown Active Directory lab on your personal computer using Oracle VirtualBox.
+This guide outlines the steps to create a full-blown Active Directory lab on Oracle VirtualBox.
 
 -----
 
@@ -13,8 +13,8 @@ Download and install the necessary software:
 
   * **Oracle VirtualBox**: The virtualization software.
   * **VirtualBox Extension Pack**: Essential for additional features.
-  * **Windows 10 ISO**: For your client machine.
-  * **Server 2019 ISO**: For your domain controller.
+  * **Windows 10 ISO**: For client machine.
+  * **Server 2019 ISO**: For domain controller.
 
 -----
 
@@ -49,13 +49,12 @@ This section details the setup of the **Domain Controller**.
 1.  Configure **Routing and Remote Access Service (RRAS)** with **Network Address Translation (NAT)** on the `DC`. This allows clients on your internal network to access the internet through the `DC`.
 2.  Set up a **DHCP server** on the `DC` to automatically assign IP addresses to client machines on your internal network.
 
-### 2.6. Create Active Directory Users (Optional)
+### 2.6. Create Active Directory Users
 
-1.  (Optional) Run a PowerShell script to create a large number of users (e.g., 1000) in Active Directory for testing purposes.
+1.  Run a PowerShell script to create a large number of users (e.g., 1000) in Active Directory for testing purposes.
 
     ```powershell
     # Example PowerShell script to create 1000 users
-    # Note: Modify OU and other parameters as needed
     for ($i = 1; $i -le 1000; $i++) {
         $username = "user$i"
         $password = ConvertTo-SecureString "Password123!" -AsPlainText -Force
@@ -67,7 +66,7 @@ This section details the setup of the **Domain Controller**.
 
 ## 3\. Create and Configure the Client Virtual Machine
 
-This section details the setup of your **Client Workstation**.
+This section details the setup of the **Client Workstation**.
 
 ### 3.1. Initial VM Creation & OS Installation
 
@@ -87,4 +86,4 @@ This section details the setup of your **Client Workstation**.
 
 ## Conclusion
 
-Once these steps are completed, you will have a functional Active Directory lab environment within VirtualBox, allowing you to experiment with various Windows networking and domain functionalities.
+Once these steps are completed, there will be a functional Active Directory lab environment within VirtualBox, allowing further experiment with various Windows networking and domain functionalities.
